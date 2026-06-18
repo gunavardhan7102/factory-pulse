@@ -83,7 +83,7 @@ export function FailureTimelineChart() {
         <ChartContainer
           config={{
             predicted: { label: "Predicted", color: "var(--chart-1)" },
-            actual: { label: "Actual", color: "var(--chart-5)" },
+            actual: { label: "Actual", color: "var(--chart-2)" },
           }}
           className="h-[240px] w-full"
         >
