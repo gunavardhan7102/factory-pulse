@@ -67,8 +67,8 @@ export function AppSidebar() {
             <Wrench className="size-5 text-sidebar-primary-foreground" />
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold text-sidebar-foreground">FactoryPulse AI</span>
-            <span className="text-xs text-sidebar-foreground/60">Predictive Maintenance</span>
+            <span className="text-sm font-semibold text-sidebar-foreground">PharmaPulse AI</span>
+            <span className="text-xs text-sidebar-foreground/60">GMP Maintenance</span>
           </div>
         </div>
       </SidebarHeader>

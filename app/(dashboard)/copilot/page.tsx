@@ -10,7 +10,7 @@ export default function CopilotPage() {
       <div className="space-y-6 h-screen flex flex-col">
         <PageHeader
           title="AI Copilot"
-          description="Intelligent maintenance recommendations and diagnostics"
+          description="Intelligent pharmaceutical maintenance recommendations with GMP compliance and diagnostics"
         />
       <div className="flex-1 min-h-0">
         <AICopilot />

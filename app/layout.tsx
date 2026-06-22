@@ -11,9 +11,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'FactoryPulse AI — Predictive Maintenance',
+  title: 'PharmaPulse AI — GMP-Compliant Predictive Maintenance',
   description:
-    'Monitor industrial machines in real time, build digital twins, predict failures with AI, and automate maintenance workflows.',
+    'Monitor pharmaceutical manufacturing equipment in real time, build digital twins, predict failures with AI, and automate GMP-compliant maintenance workflows.',
   generator: 'v0.app',
   icons: {
     icon: [

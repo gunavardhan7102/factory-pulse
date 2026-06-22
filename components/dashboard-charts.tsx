@@ -28,8 +28,8 @@ export function HealthTrendChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Health Score Trend</CardTitle>
-        <CardDescription>Average fleet health vs. target over 6 months</CardDescription>
+        <CardTitle>Equipment Health Score Trend</CardTitle>
+        <CardDescription>Average equipment health vs. GMP target over 6 months</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -106,13 +106,13 @@ export function DowntimeChart() {
     <Card>
       <CardHeader>
         <CardTitle>Downtime Reduction</CardTitle>
-        <CardDescription>Unplanned downtime hours per quarter</CardDescription>
+        <CardDescription>Unplanned manufacturing downtime hours per quarter</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={{
             before: { label: "Before AI", color: "var(--muted-foreground)" },
-            after: { label: "With FactoryPulse", color: "var(--chart-3)" },
+            after: { label: "With PharmaPulse", color: "var(--chart-3)" },
           }}
           className="h-[240px] w-full"
         >
@@ -148,7 +148,7 @@ export function CostSavingsChart() {
     <Card>
       <CardHeader>
         <CardTitle>Maintenance Cost Savings</CardTitle>
-        <CardDescription>Cumulative savings ($K) from predictive maintenance</CardDescription>
+        <CardDescription>Cumulative savings ($K) from GMP-compliant predictive maintenance</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -184,8 +184,8 @@ export function StatusDistributionChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Machine Status Distribution</CardTitle>
-        <CardDescription>Current fleet health breakdown</CardDescription>
+        <CardTitle>Equipment Status Distribution</CardTitle>
+        <CardDescription>Current manufacturing equipment health breakdown</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer

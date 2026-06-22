@@ -10,7 +10,7 @@ export default function AnalyticsPage() {
       <div className="flex flex-col">
         <PageHeader
           title="Predictive Analytics"
-          description="Machine-learning models forecast failures, detect anomalies, and quantify remaining useful life."
+          description="ML models forecast pharmaceutical equipment failures, detect anomalies, and ensure regulatory compliance with RUL predictions."
         />
         <div className="p-4 md:p-6">
           <AnalyticsCharts />

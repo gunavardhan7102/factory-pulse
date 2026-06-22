@@ -10,7 +10,7 @@ export default function TechnicianPage() {
       <div className="space-y-6">
         <PageHeader
           title="Mobile Technician Workspace"
-          description="On-site job management and checklist execution"
+          description="On-site GMP-compliant job management and pharma maintenance checklist execution"
         />
         <div className="flex justify-center py-8">
           <TechnicianApp />

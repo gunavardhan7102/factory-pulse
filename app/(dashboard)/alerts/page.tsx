@@ -41,7 +41,7 @@ export default function AlertsPage() {
       <div className="space-y-6">
       <PageHeader
         title="Alerts & Notifications"
-        description="Real-time system alerts and predictive warnings"
+        description="Real-time GMP compliance alerts and predictive pharmaceutical equipment warnings"
       />
 
       <div className="grid gap-4 md:grid-cols-4">
