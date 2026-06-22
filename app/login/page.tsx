@@ -41,10 +41,10 @@ export default function LoginPage() {
       {/* Left Panel - Credentials Info */}
       <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-12 text-white">
         <div>
-          <h1 className="text-4xl font-bold mb-3">FactoryPulse AI</h1>
-          <p className="text-xl text-slate-300 font-light">Predictive Maintenance System</p>
+          <h1 className="text-4xl font-bold mb-3">PharmaPulse AI</h1>
+          <p className="text-xl text-slate-300 font-light">GMP-Compliant Predictive Maintenance System</p>
           <p className="text-slate-400 mt-4 leading-relaxed max-w-md">
-            Intelligent maintenance management platform for industrial equipment. Real-time monitoring, predictive analytics, and work order management.
+            Intelligent maintenance management platform for pharmaceutical manufacturing equipment. Real-time monitoring, predictive analytics, and GMP-compliant work order management.
           </p>
         </div>
 
@@ -83,7 +83,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-slate-500 text-xs">© 2026 FactoryPulse AI. All rights reserved.</p>
+        <p className="text-slate-500 text-xs">© 2026 PharmaPulse AI. All rights reserved.</p>
       </div>
 
       {/* Right Panel - Login Form */}
@@ -91,8 +91,8 @@ export default function LoginPage() {
         <div className="w-full max-w-md space-y-8">
           {/* Mobile Header */}
           <div className="lg:hidden text-center space-y-2 mb-8">
-            <h1 className="text-3xl font-bold text-foreground">FactoryPulse AI</h1>
-            <p className="text-sm text-muted-foreground">Predictive Maintenance System</p>
+            <h1 className="text-3xl font-bold text-foreground">PharmaPulse AI</h1>
+            <p className="text-sm text-muted-foreground">GMP-Compliant Predictive Maintenance System</p>
           </div>
 
           {/* Login Card */}

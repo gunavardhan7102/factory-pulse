@@ -35,7 +35,7 @@ export default function ConnectivityPage() {
       <div className="flex flex-col">
       <PageHeader
         title="Connectivity Center"
-        description="Manage industrial protocol gateways linking PLCs, sensors, and cloud IoT hubs to FactoryPulse."
+        description="Manage pharmaceutical manufacturing protocol gateways linking equipment, sensors, and cloud IoT hubs to PharmaPulse."
         actions={
           <Button variant="outline" size="sm">
             <RefreshCw className="size-4" />
@@ -87,7 +87,7 @@ export default function ConnectivityPage() {
         <Card>
           <CardHeader>
             <CardTitle>Network Topology</CardTitle>
-            <CardDescription>Edge devices stream telemetry through gateways into the FactoryPulse cloud.</CardDescription>
+            <CardDescription>Manufacturing equipment streams telemetry through gateways into the PharmaPulse cloud for regulatory compliance.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-center">
@@ -114,8 +114,8 @@ export default function ConnectivityPage() {
                 <div className="flex size-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                   <Server className="size-6" />
                 </div>
-                <p className="text-sm font-semibold text-foreground">FactoryPulse Gateway</p>
-                <p className="text-xs text-muted-foreground">Protocol normalization · TLS 1.3</p>
+                <p className="text-sm font-semibold text-foreground">PharmaPulse Gateway</p>
+                <p className="text-xs text-muted-foreground">GMP protocol normalization · TLS 1.3</p>
               </div>
 
               <div className="flex items-center justify-center text-muted-foreground">

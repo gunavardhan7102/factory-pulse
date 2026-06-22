@@ -28,7 +28,7 @@ export default function DashboardPage() {
       <>
       <PageHeader
         title="Executive Dashboard"
-        description="Real-time fleet health and predictive maintenance overview"
+        description="Real-time equipment health and GMP-compliant predictive maintenance overview"
       />
       <div className="flex flex-col gap-6 p-4 md:p-6">
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">

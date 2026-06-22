@@ -10,7 +10,7 @@ export default function MaintenancePage() {
       <div className="flex flex-col">
         <PageHeader
           title="Maintenance Command Center"
-          description="Plan, assign, and track work orders. Drag cards between columns to update their status."
+          description="Plan, assign, and track GMP-compliant preventive maintenance work orders. Drag cards between columns to update their status."
         />
       <div className="p-4 md:p-6">
         <MaintenanceBoard />

@@ -9,8 +9,8 @@ export default function MachinesPage() {
     <ProtectedRoute allowedRoles={["manager"]}>
       <>
         <PageHeader
-          title="Machine Fleet"
-          description="Monitor and manage all connected industrial machines"
+          title="Equipment Fleet"
+          description="Monitor and manage all pharmaceutical manufacturing equipment with GMP compliance"
         />
         <div className="p-4 md:p-6">
           <FleetTable />

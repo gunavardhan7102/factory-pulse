@@ -9,8 +9,8 @@ export default function DigitalTwinPage() {
     <ProtectedRoute allowedRoles={["manager"]}>
       <div className="flex flex-col">
         <PageHeader
-          title="Digital Twin"
-          description="A live virtual replica of each asset, synchronized with real-time sensor telemetry."
+          title="Equipment Digital Twin"
+          description="A live virtual replica of each pharmaceutical asset, synchronized with real-time sensor telemetry for GMP monitoring."
         />
       <div className="p-4 md:p-6">
         <DigitalTwin />

@@ -20,7 +20,7 @@ const initialMessages: Message[] = [
     id: "1",
     role: "assistant",
     content:
-      "Hello! I'm your FactoryPulse AI Copilot. I can help you with predictive maintenance insights, troubleshooting recommendations, spare parts availability, and maintenance planning. Ask me anything about your machines or upcoming maintenance schedules.",
+      "Hello! I'm your PharmaPulse AI Copilot. I can help you with GMP-compliant predictive maintenance insights, pharmaceutical equipment troubleshooting recommendations, spare parts availability, and regulatory maintenance planning. Ask me anything about your manufacturing equipment or upcoming maintenance schedules.",
     timestamp: new Date(Date.now() - 5 * 60000),
   },
 ]
@@ -68,7 +68,7 @@ export function AICopilot() {
     <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>AI Copilot</CardTitle>
-        <CardDescription>Predictive maintenance insights and troubleshooting assistant</CardDescription>
+        <CardDescription>GMP-compliant pharmaceutical equipment insights and regulatory troubleshooting assistant</CardDescription>
       </CardHeader>
       <Separator />
       <ScrollArea className="flex-1 p-4">
