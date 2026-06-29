@@ -6,6 +6,7 @@ import { ArrowUpDown, Search, Download, Wrench, ExternalLink } from "lucide-reac
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
@@ -170,6 +171,8 @@ export function FleetTable() {
                 <SortHeader label="Runtime" k="runtimeHours" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <SortHeader label="Current A" k="currentDraw" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <SortHeader label="Health" k="healthScore" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+                <TableHead>EHI</TableHead>
+                <TableHead>Criticality</TableHead>
                 <TableHead>Failure Risk</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="w-10" />
@@ -206,6 +209,35 @@ export function FleetTable() {
                   <TableCell className="tabular-nums text-foreground">{m.currentDraw}</TableCell>
                   <TableCell>
                     <HealthBar value={m.healthScore} />
+                  </TableCell>
+                  <TableCell>
+                    {m.ehi ? (
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 w-10 overflow-hidden rounded-full bg-muted">
+                          <div 
+                            className={cn("h-full rounded-full", m.ehi.score >= 80 ? "bg-success" : m.ehi.score >= 60 ? "bg-warning" : "bg-destructive")} 
+                            style={{ width: `${m.ehi.score}%` }} 
+                          />
+                        </div>
+                        <span className="text-xs font-medium">{m.ehi.score}</span>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {m.criticality ? (
+                      <Badge className={cn(
+                        m.criticality === "Critical" ? "bg-red-100 text-red-800" :
+                        m.criticality === "High" ? "bg-orange-100 text-orange-800" :
+                        m.criticality === "Medium" ? "bg-yellow-100 text-yellow-800" :
+                        "bg-green-100 text-green-800"
+                      )}>
+                        {m.criticality}
+                      </Badge>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <ProbabilityBadge value={m.failureProbability} />
