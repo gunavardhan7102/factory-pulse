@@ -24,9 +24,9 @@ export default function DashboardPage() {
     .filter((m) => m.status !== "healthy")
     .sort((a, b) => {
       // Sort by criticality first, then by remaining useful life
-      const criticalityOrder = { "Critical": 0, "High": 1, "Medium": 2, "Low": 3 }
-      const aCrit = criticalityOrder[m.criticality as keyof typeof criticalityOrder] ?? 4
-      const bCrit = criticalityOrder[b.criticality as keyof typeof criticalityOrder] ?? 4
+      const criticalityOrder: Record<string, number> = { "Critical": 0, "High": 1, "Medium": 2, "Low": 3 }
+      const aCrit = (a.criticality && criticalityOrder[a.criticality]) ?? 4
+      const bCrit = (b.criticality && criticalityOrder[b.criticality]) ?? 4
       if (aCrit !== bCrit) return aCrit - bCrit
       return a.remainingUsefulLife - b.remainingUsefulLife
     })

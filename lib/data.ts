@@ -539,6 +539,11 @@ export const machines: Machine[] = [
   },
 ]
 
+const machinesWithEHI = machines.filter(m => m.ehi)
+const machinesWithMTBF = machines.filter(m => m.mtbf)
+const machinesWithMTTR = machines.filter(m => m.mttr)
+const machinesWithAvailability = machines.filter(m => m.availability)
+
 export const kpis = {
   totalMachines: machines.length,
   healthyMachines: machines.filter((m) => m.status === "healthy").length,
@@ -548,25 +553,21 @@ export const kpis = {
   predictedFailures30d: machines.filter(
     (m) => m.predictedFailureDate !== null && m.remainingUsefulLife <= 30,
   ).length,
-  avgHealthScore: Math.round(
+  avgHealthScore: machines.length > 0 ? Math.round(
     machines.reduce((s, m) => s + m.healthScore, 0) / machines.length,
-  ),
-  avgEHI: Math.round(
-    machines.filter(m => m.ehi).reduce((s, m) => s + (m.ehi?.score || 0), 0) / 
-    machines.filter(m => m.ehi).length
-  ),
-  avgMTBF: Math.round(
-    machines.filter(m => m.mtbf).reduce((s, m) => s + (m.mtbf || 0), 0) / 
-    machines.filter(m => m.mtbf).length
-  ),
-  avgMTTR: Math.round(
-    machines.filter(m => m.mttr).reduce((s, m) => s + (m.mttr || 0), 0) / 
-    machines.filter(m => m.mttr).length
-  ),
-  avgAvailability: Math.round(
-    machines.filter(m => m.availability).reduce((s, m) => s + (m.availability || 0), 0) / 
-    machines.filter(m => m.availability).length
-  ),
+  ) : 0,
+  avgEHI: machinesWithEHI.length > 0 ? Math.round(
+    machinesWithEHI.reduce((s, m) => s + (m.ehi?.score || 0), 0) / machinesWithEHI.length
+  ) : 0,
+  avgMTBF: machinesWithMTBF.length > 0 ? Math.round(
+    machinesWithMTBF.reduce((s, m) => s + (m.mtbf || 0), 0) / machinesWithMTBF.length
+  ) : 0,
+  avgMTTR: machinesWithMTTR.length > 0 ? Math.round(
+    machinesWithMTTR.reduce((s, m) => s + (m.mttr || 0), 0) / machinesWithMTTR.length
+  ) : 0,
+  avgAvailability: machinesWithAvailability.length > 0 ? Math.round(
+    machinesWithAvailability.reduce((s, m) => s + (m.availability || 0), 0) / machinesWithAvailability.length
+  ) : 0,
   predictedFailuresPrevented: 42,
 }
 
