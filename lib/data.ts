@@ -1,8 +1,10 @@
 export type MachineStatus = "healthy" | "warning" | "critical"
 export type FailureProbability = "Low" | "Medium" | "High"
 export type AssetCriticality = "Critical" | "High" | "Medium" | "Low"
-export type AlertLevel = "Critical" | "High" | "Medium" | "Low" | "Info"
+export type AlertLevel = "Information" | "Warning" | "Alarm" | "Critical" | "Emergency"
 export type FailureMode = "Bearing Degradation" | "Seal Failure" | "Electrical Fault" | "Mechanical Wear" | "Thermal Anomaly" | "Vibration Spike" | "Performance Degradation"
+export type MaintenanceWorkflowStage = "Failure Prediction" | "Maintenance Alert" | "Work Order Created" | "Technician Assigned" | "Technician Accepted" | "In Progress" | "Completed" | "Supervisor Verified" | "Closed"
+export type TechnicianSkill = "Bearing Replacement" | "Seal Maintenance" | "Electrical Repair" | "Mechanical Adjustment" | "Thermal System" | "Vibration Analysis" | "Preventive Maintenance"
 
 export interface EquipmentHealthIndex {
   score: number // 0-100
@@ -10,7 +12,13 @@ export interface EquipmentHealthIndex {
   electrical: number // Contributing factor
   thermal: number // Contributing factor
   operational: number // Contributing factor
+  temperature?: number // Contribution percentage
+  vibration?: number // Contribution percentage
+  current?: number // Contribution percentage
+  maintenanceHistory?: number // Contribution percentage
+  aiPrediction?: number // Contribution percentage
   trend: "improving" | "stable" | "degrading"
+  lastUpdated?: string // Timestamp like "10 sec ago"
 }
 
 export interface FailureAnalysis {
@@ -20,6 +28,40 @@ export interface FailureAnalysis {
   affectedSystems: string[]
   timeToFailure: number // hours
   recommendedAction: string
+  estimatedFailureTime?: string // e.g., "6 Days"
+}
+
+export interface RootCauseAnalysis {
+  cause: string
+  probability: number // 0-100
+}
+
+export interface TechnicianProfile {
+  id: string
+  name: string
+  skills: TechnicianSkill[]
+  availability: "Available" | "Busy" | "Off-duty"
+  workloadPercentage: number // 0-100
+  rating: number // 1-5 stars
+  matchPercentage?: number // AI recommendation match %
+}
+
+export interface MaintenanceWorkflowStep {
+  stage: MaintenanceWorkflowStage
+  timestamp?: string
+  notes?: string
+  completed: boolean
+}
+
+export interface HealthExplanation {
+  lastUpdated: string
+  contributors: {
+    temperature: { value: number; change: number; status: "up" | "down" | "stable" }
+    vibration: { value: number; change: number; status: "up" | "down" | "stable" }
+    current: { value: number; change: number; status: "up" | "down" | "stable" }
+    maintenanceHistory: { value: number; status: "good" | "fair" | "poor" }
+    aiPrediction: { value: number; status: "positive" | "neutral" | "negative" }
+  }
 }
 
 export interface Machine {
@@ -45,11 +87,19 @@ export interface Machine {
   mtbf?: number // Mean Time Between Failures (hours)
   mttr?: number // Mean Time To Repair (hours)
   failureAnalysis?: FailureAnalysis[] // Potential failure modes
+  rootCauseAnalysis?: RootCauseAnalysis[] // Root cause breakdown
   availability?: number // 0-100 percentage
   lastMaintenanceDate?: string
   nextScheduledMaintenance?: string
   serialNumber?: string
   installDate?: string
+  manufacturer?: string
+  model?: string
+  operationalStatus?: "Running" | "Stopped" | "Maintenance" | "Offline"
+  currentRuntime?: number // Current session runtime in hours
+  pressure?: number // Additional sensor for certain equipment
+  workflow?: MaintenanceWorkflowStep[] // Maintenance workflow tracking
+  healthExplanation?: HealthExplanation
 }
 
 export const machines: Machine[] = [
@@ -494,12 +544,38 @@ export const kpis = {
   healthyMachines: machines.filter((m) => m.status === "healthy").length,
   atRisk: machines.filter((m) => m.status !== "healthy").length,
   activeWorkOrders: 7,
+  overdueWorkOrders: 2,
   predictedFailures30d: machines.filter(
     (m) => m.predictedFailureDate !== null && m.remainingUsefulLife <= 30,
   ).length,
   avgHealthScore: Math.round(
     machines.reduce((s, m) => s + m.healthScore, 0) / machines.length,
   ),
+  avgEHI: Math.round(
+    machines.filter(m => m.ehi).reduce((s, m) => s + (m.ehi?.score || 0), 0) / 
+    machines.filter(m => m.ehi).length
+  ),
+  avgMTBF: Math.round(
+    machines.filter(m => m.mtbf).reduce((s, m) => s + (m.mtbf || 0), 0) / 
+    machines.filter(m => m.mtbf).length
+  ),
+  avgMTTR: Math.round(
+    machines.filter(m => m.mttr).reduce((s, m) => s + (m.mttr || 0), 0) / 
+    machines.filter(m => m.mttr).length
+  ),
+  avgAvailability: Math.round(
+    machines.filter(m => m.availability).reduce((s, m) => s + (m.availability || 0), 0) / 
+    machines.filter(m => m.availability).length
+  ),
+  predictedFailuresPrevented: 42,
+}
+
+export const kpiTrends = {
+  avgHealthScore: { current: kpis.avgHealthScore, previous: 81, trend: "down" as const },
+  avgEHI: { current: kpis.avgEHI, previous: 74, trend: "up" as const },
+  avgMTBF: { current: kpis.avgMTBF, previous: 2650, trend: "down" as const },
+  avgMTTR: { current: kpis.avgMTTR, previous: 8.5, trend: "up" as const },
+  avgAvailability: { current: kpis.avgAvailability, previous: 97.8, trend: "down" as const },
 }
 
 export const healthTrend = [
@@ -570,19 +646,29 @@ export interface WorkOrder {
   title: string
   priority: "Low" | "Medium" | "High" | "Critical"
   stage: "Pending" | "Assigned" | "In Progress" | "Review" | "Completed"
+  workflowStage?: MaintenanceWorkflowStage
   technician: string | null
+  technicianId?: string
+  technicianProfile?: TechnicianProfile
   technicianAccepted: boolean
   assignedAt: string | null
   acceptedAt: string | null
   startedAt: string | null
   reviewedAt: string | null
   completedAt: string | null
+  supervisorVerifiedAt?: string | null
+  closedAt?: string | null
   parts: string[]
   partsStatus: "Pending" | "Ready" | "Issued" | "Additional Needed"
   partsRequests: PartRequest[]
   subTasks: SubTask[]
   created: string
   due: string
+  failurePredictionId?: string // Link to the failure prediction that triggered this WO
+  estimatedDuration?: number // Hours
+  actualDuration?: number // Hours
+  rootCauseIdentified?: string
+  notes?: string
 }
 
 export interface Technician {
@@ -592,14 +678,87 @@ export interface Technician {
   phone: string
   status: "available" | "busy" | "off-duty"
   assignedJobs: number
+  skills?: TechnicianSkill[]
+  workload?: number // 0-100 percentage
+  rating?: number // 1-5 stars
+  availability?: "Available" | "Busy" | "Off-duty"
+}
+
+// Terminology mapping for consistent UI naming
+export const terminologyMap = {
+  machine: "Equipment",
+  machines: "Equipment Fleet",
+  healthScore: "Equipment Health Index (EHI)",
+  prediction: "Failure Prediction",
+  job: "Work Order",
+  jobs: "Work Orders",
+  alert: "Maintenance Alert",
+  alerts: "Maintenance Alerts",
+  worker: "Technician",
+  workers: "Technicians",
 }
 
 export const technicians: Technician[] = [
-  { name: "J. Okafor", id: "T-001", email: "j.okafor@factory.com", phone: "+1-555-0101", status: "available", assignedJobs: 2 },
-  { name: "M. Larsson", id: "T-002", email: "m.larsson@factory.com", phone: "+1-555-0102", status: "busy", assignedJobs: 3 },
-  { name: "R. Mehta", id: "T-003", email: "r.mehta@factory.com", phone: "+1-555-0103", status: "available", assignedJobs: 1 },
-  { name: "A. Costa", id: "T-004", email: "a.costa@factory.com", phone: "+1-555-0104", status: "off-duty", assignedJobs: 0 },
-  { name: "S. Nguyen", id: "T-005", email: "s.nguyen@factory.com", phone: "+1-555-0105", status: "available", assignedJobs: 4 },
+  {
+    name: "J. Okafor",
+    id: "T-001",
+    email: "j.okafor@factory.com",
+    phone: "+1-555-0101",
+    status: "available",
+    assignedJobs: 2,
+    skills: ["Bearing Replacement", "Mechanical Adjustment", "Preventive Maintenance"],
+    workload: 45,
+    rating: 4.8,
+    availability: "Available",
+  },
+  {
+    name: "M. Larsson",
+    id: "T-002",
+    email: "m.larsson@factory.com",
+    phone: "+1-555-0102",
+    status: "busy",
+    assignedJobs: 3,
+    skills: ["Electrical Repair", "Seal Maintenance", "Vibration Analysis"],
+    workload: 78,
+    rating: 4.5,
+    availability: "Busy",
+  },
+  {
+    name: "R. Mehta",
+    id: "T-003",
+    email: "r.mehta@factory.com",
+    phone: "+1-555-0103",
+    status: "available",
+    assignedJobs: 1,
+    skills: ["Thermal System", "Preventive Maintenance", "Bearing Replacement"],
+    workload: 35,
+    rating: 5.0,
+    availability: "Available",
+  },
+  {
+    name: "A. Costa",
+    id: "T-004",
+    email: "a.costa@factory.com",
+    phone: "+1-555-0104",
+    status: "off-duty",
+    assignedJobs: 0,
+    skills: ["Mechanical Adjustment", "Vibration Analysis", "Electrical Repair"],
+    workload: 0,
+    rating: 4.7,
+    availability: "Off-duty",
+  },
+  {
+    name: "S. Nguyen",
+    id: "T-005",
+    email: "s.nguyen@factory.com",
+    phone: "+1-555-0105",
+    status: "available",
+    assignedJobs: 4,
+    skills: ["Seal Maintenance", "Thermal System", "Preventive Maintenance"],
+    workload: 62,
+    rating: 4.9,
+    availability: "Available",
+  },
 ]
 
 export const workOrders: WorkOrder[] = [

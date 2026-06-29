@@ -32,11 +32,16 @@ type SortKey = keyof Pick<
 >
 
 const locations = ["All Locations", ...Array.from(new Set(machines.map((m) => m.location)))]
+const plants = ["All Plants", ...Array.from(new Set(machines.map((m) => m.plant).filter(Boolean)))]
+const lines = ["All Lines", ...Array.from(new Set(machines.map((m) => m.line).filter(Boolean)))]
 
 export function FleetTable() {
   const [query, setQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [locationFilter, setLocationFilter] = useState<string>("All Locations")
+  const [plantFilter, setPlantFilter] = useState<string>("All Plants")
+  const [lineFilter, setLineFilter] = useState<string>("All Lines")
+  const [criticalityFilter, setCriticalityFilter] = useState<string>("all")
   const [sortKey, setSortKey] = useState<SortKey>("healthScore")
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc")
   const [selected, setSelected] = useState<Set<string>>(new Set())
@@ -48,7 +53,10 @@ export function FleetTable() {
         m.name.toLowerCase().includes(query.toLowerCase())
       const matchesStatus = statusFilter === "all" || m.status === statusFilter
       const matchesLocation = locationFilter === "All Locations" || m.location === locationFilter
-      return matchesQuery && matchesStatus && matchesLocation
+      const matchesPlant = plantFilter === "All Plants" || m.plant === plantFilter
+      const matchesLine = lineFilter === "All Lines" || m.line === lineFilter
+      const matchesCriticality = criticalityFilter === "all" || m.criticality === criticalityFilter
+      return matchesQuery && matchesStatus && matchesLocation && matchesPlant && matchesLine && matchesCriticality
     })
     rows = [...rows].sort((a, b) => {
       const va = a[sortKey]
@@ -57,7 +65,7 @@ export function FleetTable() {
       return sortDir === "asc" ? cmp : -cmp
     })
     return rows
-  }, [query, statusFilter, locationFilter, sortKey, sortDir])
+  }, [query, statusFilter, locationFilter, plantFilter, lineFilter, criticalityFilter, sortKey, sortDir])
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) {
@@ -117,14 +125,36 @@ export function FleetTable() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={locationFilter} onValueChange={(v) => setLocationFilter(v as string)}>
-              <SelectTrigger className="w-[180px]">{locationFilter}</SelectTrigger>
+            <Select value={plantFilter} onValueChange={(v) => setPlantFilter(v as string)}>
+              <SelectTrigger className="w-[140px]">{plantFilter}</SelectTrigger>
               <SelectContent>
-                {locations.map((l) => (
+                {plants.map((p) => (
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={lineFilter} onValueChange={(v) => setLineFilter(v as string)}>
+              <SelectTrigger className="w-[140px]">{lineFilter}</SelectTrigger>
+              <SelectContent>
+                {lines.map((l) => (
                   <SelectItem key={l} value={l}>
                     {l}
                   </SelectItem>
                 ))}
+              </SelectContent>
+            </Select>
+            <Select value={criticalityFilter} onValueChange={(v) => setCriticalityFilter(v as string)}>
+              <SelectTrigger className="w-[140px]">
+                {criticalityFilter === "all" ? "All Criticality" : criticalityFilter}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Criticality</SelectItem>
+                <SelectItem value="Critical">Critical</SelectItem>
+                <SelectItem value="High">High</SelectItem>
+                <SelectItem value="Medium">Medium</SelectItem>
+                <SelectItem value="Low">Low</SelectItem>
               </SelectContent>
             </Select>
             <Button variant="outline" size="sm" className="gap-1.5">
@@ -180,19 +210,28 @@ export function FleetTable() {
             </TableHeader>
             <TableBody>
               {filtered.map((m) => (
-                <TableRow key={m.id} data-selected={selected.has(m.id)} className="data-[selected=true]:bg-primary/5">
-                  <TableCell>
+                <TableRow 
+                  key={m.id} 
+                  data-selected={selected.has(m.id)} 
+                  className="data-[selected=true]:bg-primary/5 cursor-pointer transition-colors hover:bg-muted/50"
+                  onClick={() => {
+                    if (!selected.has(m.id)) {
+                      window.location.href = `/machines/${m.id}`
+                    }
+                  }}
+                >
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <Checkbox
                       checked={selected.has(m.id)}
                       onCheckedChange={() => toggleRow(m.id)}
                       aria-label={`Select ${m.id}`}
                     />
                   </TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
+                  <TableCell className="cursor-pointer">
+                    <Link href={`/machines/${m.id}`} className="flex flex-col hover:underline">
                       <span className="font-medium text-foreground">{m.name}</span>
                       <span className="font-mono text-xs text-muted-foreground">{m.id} · {m.type}</span>
-                    </div>
+                    </Link>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{m.location}</TableCell>
                   <TableCell>
