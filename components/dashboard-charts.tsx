@@ -112,7 +112,7 @@ export function DowntimeChart() {
         <ChartContainer
           config={{
             before: { label: "Before AI", color: "var(--muted-foreground)" },
-            after: { label: "With PharmaPulse", color: "var(--chart-3)" },
+            after: { label: "With FactoryPulse AI", color: "var(--chart-3)" },
           }}
           className="h-[240px] w-full"
         >

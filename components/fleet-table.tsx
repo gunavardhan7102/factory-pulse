@@ -200,11 +200,10 @@ export function FleetTable() {
                 <SortHeader label="Vib mm/s" k="vibration" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <SortHeader label="Runtime" k="runtimeHours" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <SortHeader label="Current A" k="currentDraw" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
-                <SortHeader label="Health" k="healthScore" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <TableHead>EHI</TableHead>
                 <TableHead>Criticality</TableHead>
-                <TableHead>Failure Risk</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Failure Probability</TableHead>
+                <TableHead>Current Status</TableHead>
                 <TableHead className="w-10" />
               </TableRow>
             </TableHeader>
@@ -246,9 +245,6 @@ export function FleetTable() {
                   </TableCell>
                   <TableCell className="tabular-nums text-foreground">{m.runtimeHours.toLocaleString()}</TableCell>
                   <TableCell className="tabular-nums text-foreground">{m.currentDraw}</TableCell>
-                  <TableCell>
-                    <HealthBar value={m.healthScore} />
-                  </TableCell>
                   <TableCell>
                     {m.ehi ? (
                       <div className="flex items-center gap-2">

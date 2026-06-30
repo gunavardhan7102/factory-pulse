@@ -32,8 +32,8 @@ export default function DashboardPage() {
     })
     .slice(0, 5)
 
-  const criticalAssets = machines.filter((m) => m.criticality === "Critical")
-  const highRiskAssets = machines.filter((m) => m.criticality === "High")
+  const criticalAssets = machines.filter((m) => m.criticality === "Critical" && m.status !== "healthy")
+  const highRiskAssets = machines.filter((m) => m.criticality === "High" && m.status !== "healthy")
 
   return (
     <ProtectedRoute allowedRoles={["admin", "manager"]}>
@@ -192,63 +192,86 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>All Equipment Requiring Attention</CardTitle>
-              <CardDescription>Ranked by criticality and remaining useful life</CardDescription>
+              <CardTitle>Equipment Requiring Attention</CardTitle>
+              <CardDescription>Top {atRisk.length} equipment by priority</CardDescription>
             </div>
             <Button render={<Link href="/machines" />} nativeButton={false} variant="outline" size="sm">
               View all
             </Button>
           </CardHeader>
-          <CardContent className="flex flex-col gap-2">
-            {atRisk.map((m) => {
-              const getCriticalityColor = (criticality?: string) => {
-                switch (criticality) {
-                  case "Critical":
-                    return "bg-red-100 text-red-800"
-                  case "High":
-                    return "bg-orange-100 text-orange-800"
-                  case "Medium":
-                    return "bg-yellow-100 text-yellow-800"
-                  case "Low":
-                    return "bg-green-100 text-green-800"
-                  default:
-                    return "bg-gray-100 text-gray-800"
-                }
-              }
-
-              return (
-                <Link
-                  key={m.id}
-                  href={`/machines/${m.id}`}
-                  className="flex items-center justify-between gap-4 rounded-lg border border-border p-3 transition-colors hover:bg-accent/50"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span className="font-mono text-xs text-muted-foreground">{m.id}</span>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-foreground">{m.name}</p>
-                      <p className="truncate text-xs text-muted-foreground">{m.location}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {m.criticality && (
-                      <Badge className={cn("text-xs whitespace-nowrap", getCriticalityColor(m.criticality))}>
-                        {m.criticality}
-                      </Badge>
-                    )}
-                    <div className="hidden text-right sm:block">
-                      <p className="text-sm font-semibold text-foreground">{m.healthScore}%</p>
-                      <p className="text-xs text-muted-foreground">EHI</p>
-                    </div>
-                    <div className="hidden text-right md:block">
-                      <p className="text-sm font-semibold text-foreground">{m.remainingUsefulLife}d</p>
-                      <p className="text-xs text-muted-foreground">RUL</p>
-                    </div>
-                    <ProbabilityBadge value={m.failureProbability} />
-                    <StatusBadge status={m.status} />
-                  </div>
-                </Link>
-              )
-            })}
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="py-2 text-left font-medium">Equipment</th>
+                    <th className="py-2 text-left font-medium">Location</th>
+                    <th className="py-2 text-center font-medium">EHI</th>
+                    <th className="py-2 text-center font-medium">RUL</th>
+                    <th className="py-2 text-center font-medium">Failure Risk</th>
+                    <th className="py-2 text-center font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {atRisk.map((m) => (
+                    <tr
+                      key={m.id}
+                      className="border-b border-border/50 transition-colors hover:bg-muted/50"
+                    >
+                      <td className="py-3">
+                        <Link
+                          href={`/machines/${m.id}`}
+                          className="flex flex-col hover:underline"
+                        >
+                          <span className="font-medium text-foreground">{m.name}</span>
+                          <span className="font-mono text-xs text-muted-foreground">{m.id}</span>
+                        </Link>
+                      </td>
+                      <td className="py-3 text-sm text-muted-foreground">{m.location}</td>
+                      <td className="py-3 text-center">
+                        <div className="flex items-center justify-center gap-1">
+                          <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
+                            <div
+                              className={cn(
+                                "h-full rounded-full",
+                                m.healthScore >= 80
+                                  ? "bg-green-500"
+                                  : m.healthScore >= 60
+                                    ? "bg-yellow-500"
+                                    : "bg-red-500"
+                              )}
+                              style={{ width: `${m.healthScore}%` }}
+                            />
+                          </div>
+                          <span className="font-medium">{m.healthScore}%</span>
+                        </div>
+                      </td>
+                      <td className="py-3 text-center">
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "text-xs font-medium",
+                            m.remainingUsefulLife <= 10
+                              ? "bg-red-100 text-red-800 border-red-300"
+                              : m.remainingUsefulLife <= 30
+                                ? "bg-yellow-100 text-yellow-800 border-yellow-300"
+                                : "bg-green-100 text-green-800 border-green-300"
+                          )}
+                        >
+                          {m.remainingUsefulLife}d
+                        </Badge>
+                      </td>
+                      <td className="py-3 text-center">
+                        <ProbabilityBadge value={m.failureProbability} />
+                      </td>
+                      <td className="py-3 text-center">
+                        <StatusBadge status={m.status} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </CardContent>
         </Card>
       </div>
