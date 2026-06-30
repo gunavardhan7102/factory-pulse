@@ -14,10 +14,10 @@ import {
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState({
-    systemName: "PharmaPulse AI",
+    systemName: "FactoryPulse AI",
     maintenanceMode: false,
     backupFrequency: "daily",
-    alertEmail: "admin@pharma.com",
+    alertEmail: "admin@factory.com",
   })
 
   const [saved, setSaved] = useState(false)
