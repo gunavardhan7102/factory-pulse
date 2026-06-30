@@ -32,8 +32,8 @@ export default function DashboardPage() {
     })
     .slice(0, 5)
 
-  const criticalAssets = machines.filter((m) => m.criticality === "Critical")
-  const highRiskAssets = machines.filter((m) => m.criticality === "High")
+  const criticalAssets = machines.filter((m) => m.criticality === "Critical" && m.status !== "healthy")
+  const highRiskAssets = machines.filter((m) => m.criticality === "High" && m.status !== "healthy")
 
   return (
     <ProtectedRoute allowedRoles={["admin", "manager"]}>
