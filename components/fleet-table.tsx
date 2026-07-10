@@ -33,14 +33,18 @@ type SortKey = keyof Pick<
 
 const locations = ["All Locations", ...Array.from(new Set(machines.map((m) => m.location)))]
 const plants = ["All Plants", ...Array.from(new Set(machines.map((m) => m.plant).filter(Boolean)))]
+const processUnits = ["All Units", ...Array.from(new Set(machines.map((m) => m.processUnit).filter(Boolean)))]
 const lines = ["All Lines", ...Array.from(new Set(machines.map((m) => m.line).filter(Boolean)))]
+const operatingStatuses = ["All Status", ...Array.from(new Set(machines.map((m) => m.operationalStatus).filter(Boolean)))]
 
 export function FleetTable() {
   const [query, setQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [locationFilter, setLocationFilter] = useState<string>("All Locations")
   const [plantFilter, setPlantFilter] = useState<string>("All Plants")
+  const [processUnitFilter, setProcessUnitFilter] = useState<string>("All Units")
   const [lineFilter, setLineFilter] = useState<string>("All Lines")
+  const [operatingStatusFilter, setOperatingStatusFilter] = useState<string>("All Status")
   const [criticalityFilter, setCriticalityFilter] = useState<string>("all")
   const [sortKey, setSortKey] = useState<SortKey>("healthScore")
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc")
@@ -50,13 +54,16 @@ export function FleetTable() {
     let rows = machines.filter((m) => {
       const matchesQuery =
         m.id.toLowerCase().includes(query.toLowerCase()) ||
-        m.name.toLowerCase().includes(query.toLowerCase())
+        m.name.toLowerCase().includes(query.toLowerCase()) ||
+        m.tagId?.toLowerCase().includes(query.toLowerCase())
       const matchesStatus = statusFilter === "all" || m.status === statusFilter
       const matchesLocation = locationFilter === "All Locations" || m.location === locationFilter
       const matchesPlant = plantFilter === "All Plants" || m.plant === plantFilter
+      const matchesProcessUnit = processUnitFilter === "All Units" || m.processUnit === processUnitFilter
       const matchesLine = lineFilter === "All Lines" || m.line === lineFilter
+      const matchesOperatingStatus = operatingStatusFilter === "All Status" || m.operationalStatus === operatingStatusFilter
       const matchesCriticality = criticalityFilter === "all" || m.criticality === criticalityFilter
-      return matchesQuery && matchesStatus && matchesLocation && matchesPlant && matchesLine && matchesCriticality
+      return matchesQuery && matchesStatus && matchesLocation && matchesPlant && matchesProcessUnit && matchesLine && matchesOperatingStatus && matchesCriticality
     })
     rows = [...rows].sort((a, b) => {
       const va = a[sortKey]
@@ -65,7 +72,7 @@ export function FleetTable() {
       return sortDir === "asc" ? cmp : -cmp
     })
     return rows
-  }, [query, statusFilter, locationFilter, plantFilter, lineFilter, criticalityFilter, sortKey, sortDir])
+  }, [query, statusFilter, locationFilter, plantFilter, processUnitFilter, lineFilter, operatingStatusFilter, criticalityFilter, sortKey, sortDir])
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) {
@@ -135,12 +142,22 @@ export function FleetTable() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={lineFilter} onValueChange={(v) => setLineFilter(v as string)}>
-              <SelectTrigger className="w-[140px]">{lineFilter}</SelectTrigger>
+            <Select value={processUnitFilter} onValueChange={(v) => setProcessUnitFilter(v as string)}>
+              <SelectTrigger className="w-[140px]">{processUnitFilter}</SelectTrigger>
               <SelectContent>
-                {lines.map((l) => (
-                  <SelectItem key={l} value={l}>
-                    {l}
+                {processUnits.map((u) => (
+                  <SelectItem key={u} value={u}>
+                    {u}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={operatingStatusFilter} onValueChange={(v) => setOperatingStatusFilter(v as string)}>
+              <SelectTrigger className="w-[140px]">{operatingStatusFilter}</SelectTrigger>
+              <SelectContent>
+                {operatingStatuses.map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -195,7 +212,10 @@ export function FleetTable() {
                   />
                 </TableHead>
                 <SortHeader label="Machine" k="id" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
-                <TableHead>Location</TableHead>
+                <TableHead>Plant</TableHead>
+                <TableHead>Process Unit</TableHead>
+                <TableHead>Tag ID</TableHead>
+                <TableHead>Operating</TableHead>
                 <SortHeader label="Temp °C" k="temperature" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <SortHeader label="Vib mm/s" k="vibration" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
                 <SortHeader label="Runtime" k="runtimeHours" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
@@ -232,7 +252,14 @@ export function FleetTable() {
                       <span className="font-mono text-xs text-muted-foreground">{m.id} · {m.type}</span>
                     </Link>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{m.location}</TableCell>
+                  <TableCell className="text-sm font-medium text-foreground">{m.plant || "—"}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{m.processUnit || "—"}</TableCell>
+                  <TableCell className="font-mono text-xs font-medium text-foreground">{m.tagId || "—"}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-xs">
+                      {m.operationalStatus || "—"}
+                    </Badge>
+                  </TableCell>
                   <TableCell>
                     <span className={cn(m.temperature >= 85 ? "font-medium text-destructive" : "text-foreground")}>
                       {m.temperature}

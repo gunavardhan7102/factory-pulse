@@ -9,8 +9,8 @@ export default function MachinesPage() {
     <ProtectedRoute allowedRoles={["manager"]}>
       <>
         <PageHeader
-          title="Equipment Fleet"
-          description="Monitor and manage all pharmaceutical manufacturing equipment with GMP compliance"
+          title="Process Asset Fleet"
+          description="Monitor and manage all DFPCL process assets across Taloja, Ratnagiri, and Goa plants"
         />
         <div className="p-4 md:p-6">
           <FleetTable />
