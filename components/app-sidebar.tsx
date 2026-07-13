@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button"
 
 const nav = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["admin", "manager"] },
-  { title: "Machines", href: "/machines", icon: Cpu, roles: ["manager"] },
+  { title: "Process Assets", href: "/machines", icon: Cpu, roles: ["manager"] },
   { title: "Digital Twins", href: "/digital-twin", icon: Boxes, roles: ["manager"] },
   { title: "Connectivity", href: "/connectivity", icon: Network, roles: ["manager"] },
   { title: "Analytics", href: "/analytics", icon: LineChart, roles: ["manager"] },

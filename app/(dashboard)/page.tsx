@@ -39,12 +39,12 @@ export default function DashboardPage() {
     <ProtectedRoute allowedRoles={["admin", "manager"]}>
       <>
       <PageHeader
-        title="Executive Dashboard"
-        description="Real-time equipment health and GMP-compliant predictive maintenance overview"
+        title="DFPCL Operations Dashboard"
+        description="Real-time process asset health and predictive maintenance overview for fertilizer production"
       />
       <div className="flex flex-col gap-6 p-4 md:p-6">
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-6">
-          <KpiCard label="Total Equipment" value={kpis.totalMachines} icon={Cpu} accent="primary" hint="Across 3 plants" />
+          <KpiCard label="Total Process Assets" value={kpis.totalMachines} icon={Cpu} accent="primary" hint="Across 3 plants" />
           <KpiCard
             label="Healthy"
             value={kpis.healthyMachines}

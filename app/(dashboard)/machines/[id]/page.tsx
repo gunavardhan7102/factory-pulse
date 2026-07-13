@@ -225,25 +225,59 @@ export default function AssetDetailPage() {
                 <CardHeader>
                   <CardTitle className="text-base">Location & Hierarchy</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-4">
                   <div className="flex items-start gap-3 rounded-lg bg-secondary/30 p-3">
                     <MapPin className="size-4 text-muted-foreground" />
-                    <div>
+                    <div className="flex-1">
                       <p className="text-sm font-medium">{machine.location}</p>
                       {machine.plant && (
-                        <div className="mt-2 flex gap-2">
-                          <Badge variant="outline" className="text-xs">
-                            {machine.plant}
-                          </Badge>
+                        <div className="mt-2 space-y-2">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <p className="text-xs text-muted-foreground">Plant</p>
+                              <Badge variant="outline" className="text-xs mt-1">
+                                {machine.plant}
+                              </Badge>
+                            </div>
+                            {machine.processUnit && (
+                              <div>
+                                <p className="text-xs text-muted-foreground">Process Unit</p>
+                                <Badge variant="outline" className="text-xs mt-1">
+                                  {machine.processUnit}
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
                           {machine.line && (
-                            <Badge variant="outline" className="text-xs">
-                              {machine.line}
-                            </Badge>
+                            <div>
+                              <p className="text-xs text-muted-foreground">Line</p>
+                              <Badge variant="outline" className="text-xs mt-1">
+                                {machine.line}
+                              </Badge>
+                            </div>
                           )}
                         </div>
                       )}
                     </div>
                   </div>
+                  {machine.tagId && (
+                    <div className="border-t border-border pt-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Equipment Tag ID</span>
+                        <span className="font-mono text-sm font-medium text-primary">{machine.tagId}</span>
+                      </div>
+                    </div>
+                  )}
+                  {machine.operationalStatus && (
+                    <div className="border-t border-border pt-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Operating Status</span>
+                        <Badge variant="outline" className="text-xs">
+                          {machine.operationalStatus}
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -281,7 +315,43 @@ export default function AssetDetailPage() {
                       <Package className="size-5 text-purple-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Pressure</p>
-                        <p className="text-lg font-semibold">{machine.pressure} bar</p>
+                        <p className="text-lg font-semibold">{machine.pressure} kPa</p>
+                      </div>
+                    </div>
+                  )}
+                  {machine.flowRate && (
+                    <div className="flex items-center gap-3 rounded-lg border border-border p-3">
+                      <Gauge className="size-5 text-cyan-500" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Flow Rate</p>
+                        <p className="text-lg font-semibold">{machine.flowRate} m³/h</p>
+                      </div>
+                    </div>
+                  )}
+                  {machine.tankLevel !== undefined && (
+                    <div className="flex items-center gap-3 rounded-lg border border-border p-3">
+                      <Package className="size-5 text-blue-400" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Tank Level</p>
+                        <p className="text-lg font-semibold">{machine.tankLevel}%</p>
+                      </div>
+                    </div>
+                  )}
+                  {machine.pH !== undefined && (
+                    <div className="flex items-center gap-3 rounded-lg border border-border p-3">
+                      <Gauge className="size-5 text-green-500" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">pH</p>
+                        <p className="text-lg font-semibold">{machine.pH}</p>
+                      </div>
+                    </div>
+                  )}
+                  {machine.bearingTemperature !== undefined && (
+                    <div className="flex items-center gap-3 rounded-lg border border-border p-3">
+                      <Thermometer className="size-5 text-red-500" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Bearing Temp</p>
+                        <p className="text-lg font-semibold">{machine.bearingTemperature}°C</p>
                       </div>
                     </div>
                   )}
