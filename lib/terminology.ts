@@ -1,10 +1,11 @@
 // Terminology mapping for consistent UI naming across the entire application
 // This ensures Machine → Equipment, Health Score → EHI, etc.
+// DFPCL-specific terminology and process plant context
 
 export const terminologyMap = {
   // Core entities
-  machine: "Equipment",
-  machines: "Equipment",
+  machine: "Process Asset",
+  machines: "Process Assets",
   machineId: "Equipment ID",
   
   // Health metrics
@@ -37,16 +38,37 @@ export const terminologyMap = {
   technicians: "Technicians",
   
   // Fleet
-  fleet: "Equipment Fleet",
+  fleet: "Process Asset Fleet",
   
   // Status terms
   healthy: "Healthy",
   warning: "Warning",
   critical: "Critical",
   running: "Running",
-  stopped: "Stopped",
+  standby: "Standby",
   maintenance: "Maintenance",
-  offline: "Offline",
+  shutdown: "Shutdown",
+  
+  // DFPCL-specific terms
+  dfpcl: "DFPCL",
+  plant: "Plant",
+  plants: "Plants",
+  processUnit: "Process Unit",
+  processUnits: "Process Units",
+  tagId: "Equipment Tag",
+  operatingStatus: "Operating Status",
+  
+  // Process plant equipment types
+  compressor: "Compressor",
+  reactor: "Reactor",
+  heatExchanger: "Heat Exchanger",
+  pump: "Pump",
+  tower: "Tower",
+  tank: "Tank",
+  boiler: "Boiler",
+  cooler: "Cooler",
+  chiller: "Chiller",
+  dryer: "Dryer",
 } as const
 
 export function getTerminology(key: keyof typeof terminologyMap): string {
