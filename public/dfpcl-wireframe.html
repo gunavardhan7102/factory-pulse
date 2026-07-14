@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFPCL Asset Management - Wireframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            color: #000;
+            line-height: 1.4;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .title-page {
+            border: 3px solid #000;
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 60px;
+            page-break-after: always;
+        }
+        
+        .title-page h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .title-page h2 {
+            font-size: 28px;
+            font-weight: normal;
+            margin-bottom: 40px;
+        }
+        
+        .title-page .roles {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 60px;
+            font-size: 18px;
+        }
+        
+        .role-section {
+            border: 2px solid #000;
+            padding: 30px;
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+        
+        .role-header {
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 3px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .screens-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .screen {
+            border: 2px solid #000;
+            padding: 15px;
+        }
+        
+        .screen-title {
+            font-weight: bold;
+            font-size: 14px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .wireframe {
+            background: #f5f5f5;
+            border: 1px dashed #333;
+            padding: 12px;
+            font-size: 11px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        
+        .sidebar {
+            float: left;
+            width: 20%;
+            border-right: 1px solid #000;
+            padding-right: 8px;
+            margin-right: 8px;
+        }
+        
+        .content {
+            margin-left: 20%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .kpi-card {
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: center;
+            font-size: 8px;
+            height: 35px;
+        }
+        
+        .chart {
+            border: 1px solid #000;
+            height: 60px;
+            margin-bottom: 8px;
+            padding: 4px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .table {
+            border: 1px solid #000;
+            font-size: 8px;
+        }
+        
+        .table-header {
+            border-bottom: 1px solid #000;
+            padding: 4px;
+            background: #e0e0e0;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4px;
+        }
+        
+        .table-row {
+            border-bottom: 1px solid #ccc;
+            padding: 4px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4px;
+        }
+        
+        .button {
+            border: 1px solid #000;
+            padding: 3px 8px;
+            font-size: 8px;
+            display: inline-block;
+            margin-right: 3px;
+        }
+        
+        .form-field {
+            border: 1px solid #999;
+            padding: 3px;
+            margin-bottom: 4px;
+            font-size: 8px;
+        }
+        
+        .section-label {
+            font-weight: bold;
+            font-size: 10px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #000;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-box {
+            border: 1px solid #000;
+            width: 20px;
+            height: 20px;
+            background: #f5f5f5;
+        }
+        
+        .role-features {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #000;
+            font-size: 10px;
+        }
+        
+        .features-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding-left: 10px;
+        }
+        
+        .feature-list li:before {
+            content: "• ";
+            margin-right: 5px;
+        }
+        
+        @media print {
+            .role-section {
+                page-break-inside: avoid;
+            }
+            .screen {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Title Page -->
+        <div class="title-page">
+            <h1>DFPCL Asset Management Platform</h1>
+            <h2>Black & White Wireframe</h2>
+            <p style="font-size: 16px; margin-bottom: 40px;">Complete System Architecture for Three User Roles</p>
+            <div class="roles">
+                <div>👤 Manager</div>
+                <div>👤 Technician</div>
+                <div>👤 Admin</div>
+            </div>
+            <p style="margin-top: 60px; font-size: 12px; color: #666;">Version 1.0 - Wireframe Sketch Document</p>
+        </div>
+
+        <!-- MANAGER ROLE -->
+        <div class="role-section">
+            <div class="role-header">MANAGER - Dashboard & Operations</div>
+            
+            <div class="screens-grid">
+                <!-- Login -->
+                <div class="screen">
+                    <div class="screen-title">1. Login Page</div>
+                    <div class="wireframe">
+                        <div style="text-align: center; margin-bottom: 10px;">DFPCL Asset Management</div>
+                        <div class="form-field">Email input</div>
+                        <div class="form-field">Password input</div>
+                        <div style="margin-top: 10px;">
+                            <div class="button">Sign In</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard -->
+                <div class="screen">
+                    <div class="screen-title">2. Dashboard (Manager)</div>
+                    <div class="wireframe">
+                        <div class="header">Header: Search | Last 24h ▼ | Notifications</div>
+                        <div class="kpi-cards">
+                            <div class="kpi-card">Total Assets</div>
+                            <div class="kpi-card">Healthy</div>
+                            <div class="kpi-card">At Risk</div>
+                            <div class="kpi-card">Work Orders</div>
+                            <div class="kpi-card">Overdue</div>
+                            <div class="kpi-card">Failures</div>
+                        </div>
+                        <div class="chart">[Health Trend Chart]</div>
+                        <div class="chart" style="height: 40px;">[Failure Prediction]</div>
+                    </div>
+                </div>
+
+                <!-- Process Assets Fleet -->
+                <div class="screen">
+                    <div class="screen-title">3. Process Assets - Fleet View</div>
+                    <div class="wireframe">
+                        <div class="section-label">Filters: Plant ▼ | Unit ▼ | Status ▼</div>
+                        <div class="table" style="height: 130px;">
+                            <div class="table-header">
+                                <div>Equipment Name | Tag ID</div>
+                                <div>Plant</div>
+                                <div>Status</div>
+                                <div>Health</div>
+                            </div>
+                            <div class="table-row">Compressor-001 | AMN-COMP-001</div>
+                            <div class="table-row">Heat Exchanger | NIT-HX-002</div>
+                            <div class="table-row">Storage Tank | UTIL-TANK-003</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asset Detail -->
+                <div class="screen">
+                    <div class="screen-title">4. Asset Detail - Equipment Profile</div>
+                    <div class="wireframe">
+                        <div class="section-label">Compressor-001 (AMN-COMP-001)</div>
+                        <div style="font-size: 8px; line-height: 1.3;">
+                            Plant: Taloja | Unit: Ammonia
+                            Status: Running | Health: 85%
+                            Sensors: Temp, Vibration, Pressure
+                            [Digital Twin Image]
+                        </div>
+                        <div class="button">View Twin</div>
+                        <div class="button">Maintenance</div>
+                    </div>
+                </div>
+
+                <!-- Maintenance -->
+                <div class="screen">
+                    <div class="screen-title">5. Maintenance - Work Orders</div>
+                    <div class="wireframe">
+                        <div class="button">+ New WO</div>
+                        <div class="table" style="height: 120px;">
+                            <div class="table-header">
+                                <div>WO ID</div>
+                                <div>Equipment</div>
+                                <div>Priority</div>
+                                <div>Status</div>
+                            </div>
+                            <div class="table-row">WO-001</div>
+                            <div class="table-row">WO-002</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics -->
+                <div class="screen">
+                    <div class="screen-title">6. Analytics - Equipment Health</div>
+                    <div class="wireframe">
+                        <div class="chart">[Health Distribution Chart]</div>
+                        <div class="chart" style="height: 40px;">[MTBF vs MTTR]</div>
+                        <div class="chart" style="height: 40px;">[Top Failures]</div>
+                    </div>
+                </div>
+
+                <!-- Digital Twin -->
+                <div class="screen">
+                    <div class="screen-title">7. Digital Twin - 3D Model</div>
+                    <div class="wireframe">
+                        <div style="border: 1px solid #000; height: 120px; display: flex; align-items: center; justify-content: center;">
+                            [3D Equipment Model with Sensor Overlays]
+                        </div>
+                        <div style="font-size: 8px; margin-top: 5px;">Bearing Temp: 85°C | Vibration: 4.2 mm/s | Pressure: 150 kPa</div>
+                    </div>
+                </div>
+
+                <!-- Connectivity -->
+                <div class="screen">
+                    <div class="screen-title">8. Connectivity - IoT Integration</div>
+                    <div class="wireframe">
+                        <div class="section-label">Connected Devices</div>
+                        <div class="table" style="height: 100px;">
+                            <div class="table-header">
+                                <div>Device</div>
+                                <div>Equipment</div>
+                                <div>Status</div>
+                                <div>Data</div>
+                            </div>
+                            <div class="table-row">Sensor-001</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="screen">
+                    <div class="screen-title">9. Alerts - Real-time Notifications</div>
+                    <div class="wireframe">
+                        <div class="section-label">Alert Filters</div>
+                        <div style="border: 1px solid #999; padding: 4px; height: 110px; overflow-y: auto; font-size: 8px;">
+                            [🔴 CRITICAL] Comp-001 Overheating
+                            [🟡 WARNING] HX-002 Pressure Low
+                            [🔵 INFO] Tank-003 Level 85%
+                            [🟢 RESOLVED] Pump-001 Online
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Copilot -->
+                <div class="screen">
+                    <div class="screen-title">10. AI Copilot - Intelligent Assistant</div>
+                    <div class="wireframe">
+                        <div style="border: 1px solid #999; padding: 4px; height: 100px; overflow-y: auto; font-size: 8px;">
+                            Manager: "What's the health of Ammonia plant?"
+                            AI: "Ammonia Plant at 87% health. 2 assets at risk..."
+                            AI: "Recommend preventive maintenance on Comp-001"
+                        </div>
+                        <div class="form-field" style="margin-top: 8px;">Type message...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-features">
+                <div class="features-title">Manager Features:</div>
+                <ul class="feature-list">
+                    <li>View all process assets across multiple plants (Taloja, Ratnagiri, Goa)</li>
+                    <li>Real-time dashboard with KPI metrics and health trends</li>
+                    <li>Multi-level filtering: Plant → Process Unit → Equipment Type</li>
+                    <li>Create and track maintenance work orders</li>
+                    <li>View equipment digital twins with live sensor data</li>
+                    <li>Analytics: Equipment health distribution, MTBF/MTTR, failure trends</li>
+                    <li>IoT connectivity management and sensor monitoring</li>
+                    <li>Real-time alert notifications by severity</li>
+                    <li>AI Copilot for intelligent insights and recommendations</li>
+                    <li>Time-range filter: Last 24h, 7d, 30d, 90d</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TECHNICIAN ROLE -->
+        <div class="role-section">
+            <div class="role-header">TECHNICIAN - Mobile Workspace</div>
+            
+            <div class="screens-grid">
+                <!-- Mobile Workspace -->
+                <div class="screen">
+                    <div class="screen-title">11. Mobile Workspace - Home</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="header">My Work Orders | Tasks</div>
+                        <div style="font-size: 9px; font-weight: bold; margin: 5px 0;">Today's Tasks: 5</div>
+                        <div class="button">Assigned To Me</div>
+                        <div class="button">In Progress</div>
+                        <div class="button">Completed</div>
+                        <div class="table" style="height: 100px;">
+                            <div class="table-row">WO-001: Comp Maintenance</div>
+                            <div class="table-row">WO-002: HX Inspection</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Order Details -->
+                <div class="screen">
+                    <div class="screen-title">12. Work Order - Details & Checklist</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="section-label">WO-001 Details</div>
+                        <div style="font-size: 8px; line-height: 1.3;">
+                            Equipment: Compressor-001
+                            Priority: HIGH
+                            Deadline: Today 5 PM
+                        </div>
+                        <div class="section-label" style="margin-top: 5px;">Checklist:</div>
+                        <div style="font-size: 8px;">
+                            ☐ Check bearings
+                            ☐ Inspect seals
+                            ☐ Take readings
+                            ☐ Document issues
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Inspection -->
+                <div class="screen">
+                    <div class="screen-title">13. Equipment Inspection - Photo & Notes</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="section-label">AMN-COMP-001 Inspection</div>
+                        <div style="border: 1px solid #999; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 9px; margin-bottom: 5px;">
+                            [Camera/Photo Capture Area]
+                        </div>
+                        <div class="form-field">Inspection Notes...</div>
+                        <div class="button">Take Photo</div>
+                        <div class="button">Save</div>
+                    </div>
+                </div>
+
+                <!-- Sensor Reading -->
+                <div class="screen">
+                    <div class="screen-title">14. Real-time Sensor Data</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="section-label">Live Readings - Compressor-001</div>
+                        <div class="table">
+                            <div class="table-header">
+                                <div>Metric</div>
+                                <div>Value</div>
+                                <div>Status</div>
+                            </div>
+                            <div class="table-row">Temperature | 82°C | OK</div>
+                            <div class="table-row">Pressure | 145 kPa | OK</div>
+                            <div class="table-row">Vibration | 3.8 mm/s | WARN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Completion -->
+                <div class="screen">
+                    <div class="screen-title">15. Report Completion - Submit WO</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="section-label">Complete Work Order</div>
+                        <div class="form-field">Issue Found: [checkbox] Yes [checkbox] No</div>
+                        <div class="form-field">Issue Description...</div>
+                        <div class="form-field">Parts Used...</div>
+                        <div class="form-field">Time Spent (hours):</div>
+                        <div style="margin-top: 8px;">
+                            <div class="button">Submit</div>
+                            <div class="button">Save Draft</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offline Mode -->
+                <div class="screen">
+                    <div class="screen-title">16. Offline Mode - Sync</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div style="font-size: 9px; font-weight: bold; color: #f00;">⚠ Offline Mode Active</div>
+                        <div style="font-size: 8px; margin: 10px 0; line-height: 1.4;">
+                            Local Data Available:
+                            • 5 Work Orders
+                            • Equipment Details
+                            • Checklists
+                            
+                            Pending Sync: 2 reports
+                        </div>
+                        <div class="button" style="margin-top: 10px;">Sync When Online</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-features">
+                <div class="features-title">Technician Features:</div>
+                <ul class="feature-list">
+                    <li>View assigned work orders with priority and deadline</li>
+                    <li>Equipment inspection checklist and guidance</li>
+                    <li>Real-time sensor readings and live monitoring</li>
+                    <li>Photo capture and note-taking for inspections</li>
+                    <li>Report completion with issue documentation</li>
+                    <li>Offline-first mobile app with sync capability</li>
+                    <li>Equipment location and navigation support</li>
+                    <li>Task completion tracking and time logging</li>
+                    <li>Direct communication with managers</li>
+                    <li>Historical work order reference</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ADMIN ROLE -->
+        <div class="role-section">
+            <div class="role-header">ADMIN - System Management & Configuration</div>
+            
+            <div class="screens-grid">
+                <!-- User Management -->
+                <div class="screen">
+                    <div class="screen-title">17. User Management - Team</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="button">+ Add User</div>
+                        <div class="table" style="height: 130px;">
+                            <div class="table-header">
+                                <div>Name</div>
+                                <div>Email</div>
+                                <div>Role</div>
+                                <div>Actions</div>
+                            </div>
+                            <div class="table-row">John Doe | john@dfpcl.com | Manager | Edit</div>
+                            <div class="table-row">Jane Smith | jane@dfpcl.com | Technician | Edit</div>
+                            <div class="table-row">Admin User | admin@dfpcl.com | Admin | Edit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Details -->
+                <div class="screen">
+                    <div class="screen-title">18. User Details - Edit Profile</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="section-label">User Profile</div>
+                        <div class="form-field">Full Name: John Doe</div>
+                        <div class="form-field">Email: john@dfpcl.com</div>
+                        <div class="form-field">Role: Manager ▼</div>
+                        <div class="form-field">Plant Assignment: Taloja ▼</div>
+                        <div class="form-field">Status: Active ▼</div>
+                        <div style="margin-top: 8px;">
+                            <div class="button">Save</div>
+                            <div class="button">Reset Password</div>
+                            <div class="button">Delete</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Settings -->
+                <div class="screen">
+                    <div class="screen-title">19. System Settings - Configuration</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="section-label">Platform Configuration</div>
+                        <div class="form-field">Company Name: DFPCL</div>
+                        <div class="form-field">Default Plant: Taloja ▼</div>
+                        <div class="form-field">Maintenance Alert Threshold: 80% ▼</div>
+                        <div class="form-field">Email Notifications: ☑ Enabled</div>
+                        <div class="form-field">Data Backup: ☑ Daily at 2 AM</div>
+                        <div style="margin-top: 8px;">
+                            <div class="button">Save Settings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log -->
+                <div class="screen">
+                    <div class="screen-title">20. Audit Log - System Activity</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="button">Export</div>
+                        <div class="form-field">Filter: ▼ Last 7 Days</div>
+                        <div class="table" style="height: 110px;">
+                            <div class="table-header">
+                                <div>Timestamp</div>
+                                <div>User</div>
+                                <div>Action</div>
+                            </div>
+                            <div class="table-row">2024-01-15 10:30 | john@dfpcl.com | Created WO-001</div>
+                            <div class="table-row">2024-01-15 09:15 | jane@dfpcl.com | Updated Asset</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plant Management -->
+                <div class="screen">
+                    <div class="screen-title">21. Plant Management - Multi-site Config</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="button">+ Add Plant</div>
+                        <div class="table" style="height: 130px;">
+                            <div class="table-header">
+                                <div>Plant</div>
+                                <div>Units</div>
+                                <div>Assets</div>
+                                <div>Actions</div>
+                            </div>
+                            <div class="table-row">Taloja | 3 | 40 | Edit</div>
+                            <div class="table-row">Ratnagiri | 2 | 20 | Edit</div>
+                            <div class="table-row">Goa | 1 | 10 | Edit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert Configuration -->
+                <div class="screen">
+                    <div class="screen-title">22. Alert Configuration - Rules</div>
+                    <div class="wireframe" style="height: 180px;">
+                        <div class="button">+ New Alert Rule</div>
+                        <div class="table" style="height: 130px;">
+                            <div class="table-header">
+                                <div>Condition</div>
+                                <div>Threshold</div>
+                                <div>Action</div>
+                            </div>
+                            <div class="table-row">Temperature > 95°C | Notify | Edit</div>
+                            <div class="table-row">Vibration > 5mm/s | Critical | Edit</div>
+                            <div class="table-row">Pressure < 120kPa | Warning | Edit</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-features">
+                <div class="features-title">Admin Features:</div>
+                <ul class="feature-list">
+                    <li>Complete user management (CRUD operations)</li>
+                    <li>Role-based access control (Manager, Technician, Admin)</li>
+                    <li>Plant and process unit hierarchy configuration</li>
+                    <li>System-wide settings and preferences</li>
+                    <li>Alert rule management and thresholds</li>
+                    <li>Comprehensive audit logging and activity tracking</li>
+                    <li>Data backup and export functionality</li>
+                    <li>Multi-plant administration and governance</li>
+                    <li>Performance metrics and system health monitoring</li>
+                    <li>Integration settings and API configuration</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- LEGEND & NOTES -->
+        <div class="role-section">
+            <div class="role-header">System Notes & Architecture</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <div class="section-label">Multi-Plant Hierarchy</div>
+                    <div style="font-size: 10px; line-height: 1.6;">
+                        <strong>Plants:</strong>
+                        • Taloja (Primary): Ammonia, Nitric Acid, Utility
+                        • Ratnagiri: Ammonia, Utility
+                        • Goa: Utility-focused
+                        
+                        <strong>Equipment per Plant:</strong>
+                        Taloja: 40 assets
+                        Ratnagiri: 20 assets
+                        Goa: 10 assets
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="section-label">Equipment Types</div>
+                    <div style="font-size: 10px; line-height: 1.6;">
+                        • Compressors
+                        • Reactors
+                        • Heat Exchangers
+                        • Pumps & Towers
+                        • Tanks & Boilers
+                        • Chillers & Coolers
+                        • Control Valves
+                        • Agitators
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="section-label">Sensor Metrics</div>
+                    <div style="font-size: 10px; line-height: 1.6;">
+                        • Temperature (°C)
+                        • Vibration (mm/s)
+                        • Pressure (kPa)
+                        • Flow Rate (m³/h)
+                        • Tank Level (%)
+                        • pH Value
+                        • Bearing Temp (°C)
+                        • Differential Pressure
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="section-label">Equipment Status</div>
+                    <div style="font-size: 10px; line-height: 1.6;">
+                        Operating Status:
+                        • Running
+                        • Standby
+                        • Maintenance
+                        • Shutdown
+                        
+                        Health Status:
+                        • Healthy (Green)
+                        • Warning (Yellow)
+                        • Critical (Red)
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; border: 2px solid #000; padding: 15px;">
+                <div class="section-label">Key Features Across All Roles</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 10px; margin-top: 10px;">
+                    <div>
+                        <strong>Manager Access:</strong>
+                        Dashboard, Fleet View, Asset Details, Digital Twin, Maintenance Tracking, Analytics, Connectivity, Alerts, AI Copilot
+                    </div>
+                    <div>
+                        <strong>Technician Access:</strong>
+                        Mobile Workspace, Work Orders, Inspections, Real-time Sensors, Photo Documentation, Offline Support, Task Tracking
+                    </div>
+                    <div>
+                        <strong>Admin Access:</strong>
+                        User Management, System Settings, Plant Configuration, Alert Rules, Audit Logs, Data Management, Integration Settings
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
