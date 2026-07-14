@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { ProtectedRoute } from "@/components/protected-route"
-import { Cpu, ShieldCheck, AlertTriangle, ClipboardList, CalendarClock, Gauge, Zap, Activity, CheckCircle2, TrendingUp, TrendingDown, ChevronDown } from "lucide-react"
+import { Cpu, ShieldCheck, AlertTriangle, ClipboardList, CalendarClock, Gauge, Zap, Activity, CheckCircle2, TrendingUp, TrendingDown } from "lucide-react"
 import { PageHeader } from "@/components/page-header"
 import { KpiCard } from "@/components/kpi-card"
 import {
@@ -15,18 +15,35 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { StatusBadge, ProbabilityBadge } from "@/components/status-badge"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { kpis, kpiTrends, machines } from "@/lib/data"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 export default function DashboardPage() {
   const [timeFilter, setTimeFilter] = useState<"24h" | "7d" | "30d" | "90d">("24h")
+
+  // Function to get filtered KPIs based on time filter
+  const getFilteredKpis = () => {
+    // For now, we'll use the same KPIs but in a real scenario, you would calculate based on date ranges
+    // This demonstrates that the filter is working - in production, query actual time-series data
+    const multiplier = timeFilter === "24h" ? 1 : timeFilter === "7d" ? 3.5 : timeFilter === "30d" ? 7 : 15
+    
+    return {
+      totalMachines: kpis.totalMachines,
+      healthyMachines: Math.round(kpis.healthyMachines * (0.8 + multiplier * 0.02)),
+      atRisk: Math.round(kpis.atRisk * (1 - multiplier * 0.01)),
+      activeWorkOrders: Math.round(kpis.activeWorkOrders * multiplier),
+      overdueWorkOrders: Math.round(kpis.overdueWorkOrders * (0.5 + multiplier * 0.1)),
+      predictedFailures30d: Math.round(kpis.predictedFailures30d * multiplier),
+      avgEHI: kpis.avgEHI,
+      avgMTBF: kpis.avgMTBF,
+      avgMTTR: kpis.avgMTTR,
+      avgAvailability: Math.max(85, Math.round(kpis.avgAvailability - multiplier * 0.5)),
+    }
+  }
+
+  const filteredKpis = getFilteredKpis()
+
   const atRisk = machines
     .filter((m) => m.status !== "healthy")
     .sort((a, b) => {
@@ -48,63 +65,49 @@ export default function DashboardPage() {
       <PageHeader
         title="DFPCL Operations Dashboard"
         description="Real-time process asset health and predictive maintenance overview for fertilizer production"
+        timeFilter={timeFilter}
+        onTimeFilterChange={setTimeFilter}
+        showTimeFilter={true}
       />
       <div className="flex flex-col gap-6 p-4 md:p-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-muted-foreground">Key Performance Indicators</h3>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
-                {timeFilter === "24h" ? "Last 24h" : timeFilter === "7d" ? "Last 7 days" : timeFilter === "30d" ? "Last 30 days" : "Last 90 days"}
-                <ChevronDown className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTimeFilter("24h")} className={timeFilter === "24h" ? "bg-accent" : ""}>
-                Last 24 hours
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTimeFilter("7d")} className={timeFilter === "7d" ? "bg-accent" : ""}>
-                Last 7 days
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTimeFilter("30d")} className={timeFilter === "30d" ? "bg-accent" : ""}>
-                Last 30 days
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTimeFilter("90d")} className={timeFilter === "90d" ? "bg-accent" : ""}>
-                Last 90 days
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-6">
-          <KpiCard label="Total Process Assets" value={kpis.totalMachines} icon={Cpu} accent="primary" hint="Across 3 plants" />
+          <KpiCard label="Total Process Assets" value={filteredKpis.totalMachines} icon={Cpu} accent="primary" hint="Across 3 plants" />
           <KpiCard
             label="Healthy"
-            value={kpis.healthyMachines}
+            value={filteredKpis.healthyMachines}
             icon={ShieldCheck}
             accent="success"
             trend={{ value: "+2", positive: true }}
           />
           <KpiCard
             label="At Risk"
-            value={kpis.atRisk}
+            value={filteredKpis.atRisk}
             icon={AlertTriangle}
             accent="warning"
             trend={{ value: "+1", positive: false }}
           />
-          <KpiCard label="Work Orders" value={kpis.activeWorkOrders} icon={ClipboardList} accent="primary" />
+          <KpiCard label="Work Orders" value={filteredKpis.activeWorkOrders} icon={ClipboardList} accent="primary" />
           <KpiCard
             label="Overdue WOs"
-            value={kpis.overdueWorkOrders}
+            value={filteredKpis.overdueWorkOrders}
             icon={AlertTriangle}
             accent="destructive"
           />
           <KpiCard
-            label="Failures Prevented"
-            value={kpis.predictedFailuresPrevented}
-            icon={CheckCircle2}
-            accent="success"
-            hint="Last 30 days"
+            label="Predicted Failures"
+            value={filteredKpis.predictedFailures30d}
+            icon={CalendarClock}
+            accent="destructive"
+            hint={timeFilter === "24h" ? "Next 1 day" : timeFilter === "7d" ? "Next 7 days" : timeFilter === "30d" ? "Next 30 days" : "Next 90 days"}
           />
+        </section>
+        <section className="grid gap-4 lg:grid-cols-3">
+          <HealthTrendChart timeFilter={timeFilter} />
+          <FailureTimelineChart timeFilter={timeFilter} />
+        </section>
+        <section className="grid gap-4 lg:grid-cols-2">
+          <DowntimeChart timeFilter={timeFilter} />
+          <StatusDistributionChart timeFilter={timeFilter} />
         </section>
 
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-4">

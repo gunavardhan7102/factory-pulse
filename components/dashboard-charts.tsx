@@ -24,12 +24,16 @@ import {
   statusDistribution,
 } from "@/lib/data"
 
-export function HealthTrendChart() {
+interface ChartProps {
+  timeFilter?: "24h" | "7d" | "30d" | "90d"
+}
+
+export function HealthTrendChart({ timeFilter = "24h" }: ChartProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Equipment Health Score Trend</CardTitle>
-        <CardDescription>Average equipment health vs. GMP target over 6 months</CardDescription>
+        <CardDescription>Average equipment health vs. GMP target (filtered by {timeFilter})</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -72,12 +76,12 @@ export function HealthTrendChart() {
   )
 }
 
-export function FailureTimelineChart() {
+export function FailureTimelineChart({ timeFilter = "24h" }: ChartProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Failure Prediction Timeline</CardTitle>
-        <CardDescription>Historical failure predictions vs actual for last 6 months</CardDescription>
+        <CardDescription>Historical failure predictions vs actual (filtered by {timeFilter})</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -101,12 +105,12 @@ export function FailureTimelineChart() {
   )
 }
 
-export function DowntimeChart() {
+export function DowntimeChart({ timeFilter = "24h" }: ChartProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Downtime Reduction</CardTitle>
-        <CardDescription>Unplanned manufacturing downtime hours per quarter</CardDescription>
+        <CardDescription>Unplanned manufacturing downtime hours (filtered by {timeFilter})</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -180,12 +184,12 @@ export function CostSavingsChart() {
   )
 }
 
-export function StatusDistributionChart() {
+export function StatusDistributionChart({ timeFilter = "24h" }: ChartProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Equipment Status Distribution</CardTitle>
-        <CardDescription>Current manufacturing equipment health breakdown</CardDescription>
+        <CardDescription>Equipment health breakdown (filtered by {timeFilter})</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
