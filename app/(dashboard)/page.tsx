@@ -32,11 +32,11 @@ export default function DashboardPage() {
     })
     .slice(0, 5)
 
-  const criticalAssets = machines.filter((m) => m.criticality === "Critical" && m.status !== "healthy")
-  const highRiskAssets = machines.filter((m) => m.criticality === "High" && m.status !== "healthy")
+  const criticalAssets = machines.filter((m) => m.criticality === "Critical" && m.status === "critical")
+  const highRiskAssets = machines.filter((m) => m.criticality === "High" && m.status === "warning")
 
   return (
-    <ProtectedRoute allowedRoles={["admin", "manager"]}>
+    <ProtectedRoute allowedRoles={["manager"]}>
       <>
       <PageHeader
         title="DFPCL Operations Dashboard"
@@ -75,7 +75,7 @@ export default function DashboardPage() {
           />
         </section>
 
-        <section className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+        <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-4">
           <KpiCard
             label="Avg EHI"
             value={`${kpis.avgEHI}%`}
@@ -98,25 +98,11 @@ export default function DashboardPage() {
             trend={{ value: kpiTrends.avgMTTR.trend === "up" ? "+0.5h" : "-0.5h", positive: kpiTrends.avgMTTR.trend === "down" }}
           />
           <KpiCard
-            label="Availability"
-            value={`${kpis.avgAvailability}%`}
-            icon={CheckCircle2}
-            accent="success"
-            trend={{ value: kpiTrends.avgAvailability.trend === "up" ? "+0.5%" : "-0.5%", positive: kpiTrends.avgAvailability.trend === "up" }}
-          />
-          <KpiCard
             label="Predicted Failures"
             value={kpis.predictedFailures30d}
             icon={CalendarClock}
             accent="destructive"
             hint="Next 30 days"
-          />
-          <KpiCard
-            label="Health Score"
-            value={`${kpis.avgHealthScore}%`}
-            icon={Gauge}
-            accent="primary"
-            trend={{ value: "-3%", positive: false }}
           />
         </section>
 

@@ -27,7 +27,7 @@ export function PageHeader({ title, description, actions }: PageHeaderProps) {
         <div className="hidden items-center gap-2 lg:flex">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search machines..." className="h-9 w-56 pl-8" />
+            <Input placeholder="Search Process Assets..." className="h-9 w-56 pl-8" />
           </div>
           <Button variant="outline" size="sm" className="gap-2">
             <Calendar className="size-4" />
