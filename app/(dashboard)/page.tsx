@@ -110,47 +110,6 @@ export default function DashboardPage() {
           <StatusDistributionChart timeFilter={timeFilter} />
         </section>
 
-        <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-4">
-          <KpiCard
-            label="Avg EHI"
-            value={`${kpis.avgEHI}%`}
-            icon={Gauge}
-            accent="primary"
-            trend={{ value: kpiTrends.avgEHI.trend === "up" ? "+2%" : "-1%", positive: kpiTrends.avgEHI.trend === "up" }}
-          />
-          <KpiCard
-            label="Avg MTBF"
-            value={`${kpis.avgMTBF}h`}
-            icon={Zap}
-            accent="primary"
-            trend={{ value: kpiTrends.avgMTBF.trend === "up" ? "+100h" : "-50h", positive: kpiTrends.avgMTBF.trend === "up" }}
-          />
-          <KpiCard
-            label="Avg MTTR"
-            value={`${kpis.avgMTTR}h`}
-            icon={Activity}
-            accent="warning"
-            trend={{ value: kpiTrends.avgMTTR.trend === "up" ? "+0.5h" : "-0.5h", positive: kpiTrends.avgMTTR.trend === "down" }}
-          />
-          <KpiCard
-            label="Predicted Failures"
-            value={kpis.predictedFailures30d}
-            icon={CalendarClock}
-            accent="destructive"
-            hint="Next 30 days"
-          />
-        </section>
-
-        <section className="grid gap-4 lg:grid-cols-2">
-          <HealthTrendChart />
-          <FailureTimelineChart />
-        </section>
-
-        <section className="grid gap-4 lg:grid-cols-2">
-          <DowntimeChart />
-          <StatusDistributionChart />
-        </section>
-
         <div className="grid gap-4 lg:grid-cols-2">
           {/* Critical Assets Alert */}
           {criticalAssets.length > 0 && (
