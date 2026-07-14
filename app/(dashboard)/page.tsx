@@ -101,15 +101,6 @@ export default function DashboardPage() {
             hint={timeFilter === "24h" ? "Next 1 day" : timeFilter === "7d" ? "Next 7 days" : timeFilter === "30d" ? "Next 30 days" : "Next 90 days"}
           />
         </section>
-        <section className="grid gap-4 lg:grid-cols-2">
-          <HealthTrendChart timeFilter={timeFilter} />
-          <FailureTimelineChart timeFilter={timeFilter} />
-        </section>
-        <section className="grid gap-4 lg:grid-cols-2">
-          <DowntimeChart timeFilter={timeFilter} />
-          <StatusDistributionChart timeFilter={timeFilter} />
-        </section>
-
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <KpiCard
             label="Avg EHI"
@@ -139,6 +130,14 @@ export default function DashboardPage() {
             accent="destructive"
             hint={timeFilter === "24h" ? "Next 1 day" : timeFilter === "7d" ? "Next 7 days" : timeFilter === "30d" ? "Next 30 days" : "Next 90 days"}
           />
+        </section>
+        <section className="grid gap-4 lg:grid-cols-2">
+          <HealthTrendChart timeFilter={timeFilter} />
+          <FailureTimelineChart timeFilter={timeFilter} />
+        </section>
+        <section className="grid gap-4 lg:grid-cols-2">
+          <DowntimeChart timeFilter={timeFilter} />
+          <StatusDistributionChart timeFilter={timeFilter} />
         </section>
 
         <div className="grid gap-4 lg:grid-cols-2">
