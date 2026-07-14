@@ -133,11 +133,11 @@ export default function DashboardPage() {
             trend={{ value: kpiTrends.avgMTTR.trend === "up" ? "+0.5h" : "-0.5h", positive: kpiTrends.avgMTTR.trend === "down" }}
           />
           <KpiCard
-            label="Avg Availability"
-            value={`${filteredKpis.avgAvailability}%`}
-            icon={CheckCircle2}
-            accent="success"
-            trend={{ value: "-0.5%", positive: false }}
+            label="Predicted Failures"
+            value={filteredKpis.predictedFailures30d}
+            icon={CalendarClock}
+            accent="destructive"
+            hint={timeFilter === "24h" ? "Next 1 day" : timeFilter === "7d" ? "Next 7 days" : timeFilter === "30d" ? "Next 30 days" : "Next 90 days"}
           />
         </section>
 
