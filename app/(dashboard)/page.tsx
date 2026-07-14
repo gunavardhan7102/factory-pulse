@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { ProtectedRoute } from "@/components/protected-route"
 import { Cpu, ShieldCheck, AlertTriangle, ClipboardList, CalendarClock, Gauge, Zap, Activity, CheckCircle2, TrendingUp, TrendingDown } from "lucide-react"
 import { PageHeader } from "@/components/page-header"
@@ -8,18 +9,18 @@ import {
   HealthTrendChart,
   FailureTimelineChart,
   DowntimeChart,
-  CostSavingsChart,
   StatusDistributionChart,
 } from "@/components/dashboard-charts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { StatusBadge, ProbabilityBadge } from "@/components/status-badge"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { kpis, kpiTrends, machines } from "@/lib/data"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export default function DashboardPage() {
+  const [timeFilter, setTimeFilter] = useState<"24h" | "7d" | "30d" | "90d">("24h")
   const atRisk = machines
     .filter((m) => m.status !== "healthy")
     .sort((a, b) => {
@@ -42,6 +43,38 @@ export default function DashboardPage() {
         title="DFPCL Operations Dashboard"
         description="Real-time process asset health and predictive maintenance overview for fertilizer production"
       />
+      <div className="border-b border-border">
+        <div className="flex gap-2 p-4 md:p-6">
+          <Button
+            variant={timeFilter === "24h" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTimeFilter("24h")}
+          >
+            Last 24h
+          </Button>
+          <Button
+            variant={timeFilter === "7d" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTimeFilter("7d")}
+          >
+            Last 7 days
+          </Button>
+          <Button
+            variant={timeFilter === "30d" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTimeFilter("30d")}
+          >
+            Last 30 days
+          </Button>
+          <Button
+            variant={timeFilter === "90d" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTimeFilter("90d")}
+          >
+            Last 90 days
+          </Button>
+        </div>
+      </div>
       <div className="flex flex-col gap-6 p-4 md:p-6">
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-6">
           <KpiCard label="Total Process Assets" value={kpis.totalMachines} icon={Cpu} accent="primary" hint="Across 3 plants" />
@@ -59,7 +92,7 @@ export default function DashboardPage() {
             accent="warning"
             trend={{ value: "+1", positive: false }}
           />
-          <KpiCard label="Work Orders" value={kpis.activeWorkOrders} icon={ClipboardList} accent="primary" hint={`${kpis.overdueWorkOrders} overdue`} />
+          <KpiCard label="Work Orders" value={kpis.activeWorkOrders} icon={ClipboardList} accent="primary" />
           <KpiCard
             label="Overdue WOs"
             value={kpis.overdueWorkOrders}
@@ -111,9 +144,8 @@ export default function DashboardPage() {
           <FailureTimelineChart />
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-3">
+        <section className="grid gap-4 lg:grid-cols-2">
           <DowntimeChart />
-          <CostSavingsChart />
           <StatusDistributionChart />
         </section>
 
@@ -192,6 +224,7 @@ export default function DashboardPage() {
                   <tr className="border-b border-border">
                     <th className="py-2 text-left font-medium">Equipment</th>
                     <th className="py-2 text-left font-medium">Location</th>
+                    <th className="py-2 text-center font-medium">Priority</th>
                     <th className="py-2 text-center font-medium">EHI</th>
                     <th className="py-2 text-center font-medium">RUL</th>
                     <th className="py-2 text-center font-medium">Failure Risk</th>
@@ -199,7 +232,7 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {atRisk.map((m) => (
+                  {atRisk.map((m, index) => (
                     <tr
                       key={m.id}
                       className="border-b border-border/50 transition-colors hover:bg-muted/50"
@@ -214,6 +247,11 @@ export default function DashboardPage() {
                         </Link>
                       </td>
                       <td className="py-3 text-sm text-muted-foreground">{m.location}</td>
+                      <td className="py-3 text-center">
+                        <Badge variant="outline" className="text-xs font-medium">
+                          P{index + 1}
+                        </Badge>
+                      </td>
                       <td className="py-3 text-center">
                         <div className="flex items-center justify-center gap-1">
                           <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
