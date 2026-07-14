@@ -101,13 +101,44 @@ export default function DashboardPage() {
             hint={timeFilter === "24h" ? "Next 1 day" : timeFilter === "7d" ? "Next 7 days" : timeFilter === "30d" ? "Next 30 days" : "Next 90 days"}
           />
         </section>
-        <section className="grid gap-4 lg:grid-cols-3">
+        <section className="grid gap-4 lg:grid-cols-2">
           <HealthTrendChart timeFilter={timeFilter} />
           <FailureTimelineChart timeFilter={timeFilter} />
         </section>
         <section className="grid gap-4 lg:grid-cols-2">
           <DowntimeChart timeFilter={timeFilter} />
           <StatusDistributionChart timeFilter={timeFilter} />
+        </section>
+
+        <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <KpiCard
+            label="Avg EHI"
+            value={`${filteredKpis.avgEHI}%`}
+            icon={Gauge}
+            accent="primary"
+            trend={{ value: kpiTrends.avgEHI.trend === "up" ? "+2%" : "-1%", positive: kpiTrends.avgEHI.trend === "up" }}
+          />
+          <KpiCard
+            label="Avg MTBF"
+            value={`${filteredKpis.avgMTBF}h`}
+            icon={Zap}
+            accent="primary"
+            trend={{ value: kpiTrends.avgMTBF.trend === "up" ? "+100h" : "-50h", positive: kpiTrends.avgMTBF.trend === "up" }}
+          />
+          <KpiCard
+            label="Avg MTTR"
+            value={`${filteredKpis.avgMTTR}h`}
+            icon={Activity}
+            accent="warning"
+            trend={{ value: kpiTrends.avgMTTR.trend === "up" ? "+0.5h" : "-0.5h", positive: kpiTrends.avgMTTR.trend === "down" }}
+          />
+          <KpiCard
+            label="Avg Availability"
+            value={`${filteredKpis.avgAvailability}%`}
+            icon={CheckCircle2}
+            accent="success"
+            trend={{ value: "-0.5%", positive: false }}
+          />
         </section>
 
         <div className="grid gap-4 lg:grid-cols-2">
