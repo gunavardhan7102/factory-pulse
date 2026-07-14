@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { ProtectedRoute } from "@/components/protected-route"
-import { Cpu, ShieldCheck, AlertTriangle, ClipboardList, CalendarClock, Gauge, Zap, Activity, CheckCircle2, TrendingUp, TrendingDown } from "lucide-react"
+import { Cpu, ShieldCheck, AlertTriangle, ClipboardList, CalendarClock, Gauge, Zap, Activity, CheckCircle2, TrendingUp, TrendingDown, ChevronDown } from "lucide-react"
 import { PageHeader } from "@/components/page-header"
 import { KpiCard } from "@/components/kpi-card"
 import {
@@ -15,6 +15,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { StatusBadge, ProbabilityBadge } from "@/components/status-badge"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { kpis, kpiTrends, machines } from "@/lib/data"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -43,39 +49,32 @@ export default function DashboardPage() {
         title="DFPCL Operations Dashboard"
         description="Real-time process asset health and predictive maintenance overview for fertilizer production"
       />
-      <div className="border-b border-border">
-        <div className="flex gap-2 p-4 md:p-6">
-          <Button
-            variant={timeFilter === "24h" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setTimeFilter("24h")}
-          >
-            Last 24h
-          </Button>
-          <Button
-            variant={timeFilter === "7d" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setTimeFilter("7d")}
-          >
-            Last 7 days
-          </Button>
-          <Button
-            variant={timeFilter === "30d" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setTimeFilter("30d")}
-          >
-            Last 30 days
-          </Button>
-          <Button
-            variant={timeFilter === "90d" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setTimeFilter("90d")}
-          >
-            Last 90 days
-          </Button>
-        </div>
-      </div>
       <div className="flex flex-col gap-6 p-4 md:p-6">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium text-muted-foreground">Key Performance Indicators</h3>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2">
+                {timeFilter === "24h" ? "Last 24h" : timeFilter === "7d" ? "Last 7 days" : timeFilter === "30d" ? "Last 30 days" : "Last 90 days"}
+                <ChevronDown className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTimeFilter("24h")} className={timeFilter === "24h" ? "bg-accent" : ""}>
+                Last 24 hours
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTimeFilter("7d")} className={timeFilter === "7d" ? "bg-accent" : ""}>
+                Last 7 days
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTimeFilter("30d")} className={timeFilter === "30d" ? "bg-accent" : ""}>
+                Last 30 days
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTimeFilter("90d")} className={timeFilter === "90d" ? "bg-accent" : ""}>
+                Last 90 days
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-6">
           <KpiCard label="Total Process Assets" value={kpis.totalMachines} icon={Cpu} accent="primary" hint="Across 3 plants" />
           <KpiCard
