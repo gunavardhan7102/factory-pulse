@@ -790,12 +790,12 @@ export const healthTrend = [
 ]
 
 export const failureTimeline = [
-  { week: "Wk 1", predicted: 1, actual: 1 },
-  { week: "Wk 2", predicted: 2, actual: 1 },
-  { week: "Wk 3", predicted: 3, actual: 2 },
-  { week: "Wk 4", predicted: 2, actual: 1 },
-  { week: "Wk 5", predicted: 4, actual: 3 },
-  { week: "Wk 6", predicted: 3, actual: 2 },
+  { week: "Jan", predicted: 4, actual: 3 },
+  { week: "Feb", predicted: 6, actual: 5 },
+  { week: "Mar", predicted: 5, actual: 6 },
+  { week: "Apr", predicted: 7, actual: 6 },
+  { week: "May", predicted: 6, actual: 7 },
+  { week: "Jun", predicted: 8, actual: 7 },
 ]
 
 export const downtimeReduction = [
