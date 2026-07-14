@@ -77,7 +77,7 @@ export function FailureTimelineChart() {
     <Card>
       <CardHeader>
         <CardTitle>Failure Prediction Timeline</CardTitle>
-        <CardDescription>Predicted vs. actual failures (6 weeks)</CardDescription>
+        <CardDescription>Predicted failures for next 6 weeks ahead</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
